@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h2>📊 Dashboard</h2>
+
+<p>Total gastado: ${{total_gasto}}</p>
+
+<canvas id="grafico"></canvas>
+
+<a href="/">Volver</a>
+
+</div>
+
+<script>
+
+const data = {
+labels:["Gastos"],
+datasets:[{
+label:"Total mantenimiento",
+data:[{{total_gasto}}],
+}]
+}
+
+new Chart(
+document.getElementById('grafico'),
+{
+type:'bar',
+data:data
+}
+)
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>Mantenimiento</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h2>🔧 Registrar mantenimiento</h2>
+
+<form method="POST">
+
+<label>Fecha</label>
+<input type="date" name="fecha" required>
+
+<label>Kilometraje</label>
+<input type="number" name="km" required>
+
+<label>Servicio</label>
+<input type="text" name="servicio" placeholder="Ej: Cambio de aceite" required>
+
+<label>Costo</label>
+<input type="number" name="costo" required>
+
+<button type="submit">Guardar</button>
+
+</form>
+
+<a href="/">Volver</a>
+
+</div>
+
+</body>
+</html>

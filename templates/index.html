@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+<link rel="manifest" href="/static/manifest.json">
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h2>🏍️ Moto Control</h2>
+
+<a class="btn" href="/mantenimiento">🔧 Mantenimiento</a>
+
+<a class="btn" href="/gasolina">⛽ Gasolina</a>
+
+<a class="btn" href="/dashboard">📊 Dashboard</a>
+
+</div>
+<script>
+
+if ("serviceWorker" in navigator) {
+navigator.serviceWorker.register("/static/sw.js")
+}
+
+</script>
+
+</body>
+</html>
