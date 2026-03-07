@@ -17,10 +17,6 @@ def conexion():
     return sqlite3.connect("moto.db")
 
 
-@app.route("/")
-def index():
-    return render_template("index.html")
-
 def login_required(f):
 
     @wraps(f)
