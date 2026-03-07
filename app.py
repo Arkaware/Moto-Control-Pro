@@ -83,8 +83,8 @@ def login():
 
     if request.method == 'POST':
 
-        username = request.form['username']
-        password = request.form['password']
+        username = request.form["username"].strip()
+        password = request.form["password"].strip()
 
         conn = conexion()
         cursor = conn.cursor()
@@ -212,7 +212,18 @@ def dashboard():
         total_gasto=total_gasto
     )
 
+@app.route("/debug_users")
+def debug_users():
 
+    conn = conexion()
+    cursor = conn.cursor()
+
+    cursor.execute("SELECT * FROM usuarios")
+    user = cursor.fetchall()
+
+    conn.close()
+
+    return str(user)
 
 
 if __name__ == "__main__":
