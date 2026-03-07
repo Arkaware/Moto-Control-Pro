@@ -99,7 +99,7 @@ def login():
 
         if user:
             session["usuario"] = username
-            return redirect("/")
+            return redirect("/index")
         else:
             return "Usuario o contraseña incorrectos"
         
