@@ -13,27 +13,7 @@
 
 <body>
 
-    <table>
 
-<tr>
-<th>Fecha</th>
-<th>Litros</th>
-<th>Precio</th>
-<th>Kilometraje</th>
-</tr>
-
-{% for g in gasolina %}
-
-<tr>
-<td>{{g.fecha}}</td>
-<td>{{g.litros}}</td>
-<td>{{g.precio}}</td>
-<td>{{g.km}}</td>
-</tr>
-
-{% endfor %}
-
-</table>
 
 <div class="container">
 
@@ -47,11 +27,14 @@
 <label>Kilometraje</label>
 <input type="number" name="km" required>
 
-<label>Litros</label>
+<label>Cantidad</label>
 <input type="number" step="0.1" name="litros" required>
 
 <label>Precio total</label>
 <input type="number" name="precio" required>
+
+<label>Observaciones</label>
+<input type="text" name="observaciones" required>
 
 <button type="submit">Guardar</button>
 
