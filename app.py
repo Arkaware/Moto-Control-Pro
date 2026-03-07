@@ -16,6 +16,9 @@ app.secret_key = "super_secret_key"
 def conexion():
     return sqlite3.connect("moto.db")
 
+conn = conexion()
+cursor = conn.cursor()
+
 
 def login_required(f):
 
