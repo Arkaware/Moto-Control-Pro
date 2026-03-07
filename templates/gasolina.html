@@ -13,6 +13,28 @@
 
 <body>
 
+    <table>
+
+<tr>
+<th>Fecha</th>
+<th>Litros</th>
+<th>Precio</th>
+<th>Kilometraje</th>
+</tr>
+
+{% for g in gasolina %}
+
+<tr>
+<td>{{g.fecha}}</td>
+<td>{{g.litros}}</td>
+<td>{{g.precio}}</td>
+<td>{{g.km}}</td>
+</tr>
+
+{% endfor %}
+
+</table>
+
 <div class="container">
 
 <h2>⛽ Registrar gasolina</h2>

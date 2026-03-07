@@ -23,6 +23,14 @@ precio INTEGER
 )
 """)
 
+cursor.execute("""
+CREATE TABLE IF NOT EXISTS usuarios(
+id INTEGER PRIMARY KEY AUTOINCREMENT,
+username TEXT UNIQUE,
+password TEXT
+)
+""")
+
 conn.commit()
 conn.close()
 

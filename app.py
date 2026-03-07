@@ -1,6 +1,9 @@
 from flask import Flask, render_template, request, redirect
 import sqlite3
 import os
+from flask import session, redirect
+from werkzeug.security import generate_password_hash, check_password_hash
+
 
 app = Flask(__name__)
 
@@ -12,6 +15,27 @@ def conexion():
 @app.route("/")
 def index():
     return render_template("index.html")
+
+
+@app.route('/login', methods=['GET','POST'])
+def login():
+
+    if request.method == 'POST':
+
+        username = request.form['username']
+        password = request.form['password']
+
+        conn = conexion()
+        cursor = conn.cursor()
+
+        cursor.execute("SELECT * FROM usuarios WHERE username=?", (username,))
+        user = cursor.fetchone()
+
+        if user and check_password_hash(user[2], password):
+            session['user'] = user[0]
+            return redirect('/dashboard')
+
+    return render_template("login.html")
 
 
 # -------------------------
