@@ -20,6 +20,7 @@ fecha TEXT,
 km INTEGER,
 litros REAL,
 precio INTEGER
+observaciones TEXT
 )
 """)
 

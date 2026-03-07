@@ -1,13 +1,17 @@
 from flask import Flask, render_template, request, redirect
 import sqlite3
 import os
-from flask import session, redirect
+from flask import session, redirect, request, render_template
 from werkzeug.security import generate_password_hash, check_password_hash
 import pandas as pd
 from flask import send_file
+from functools import wraps
+
+
 
 app = Flask(__name__)
 
+app.secret_key = "super_secret_key"
 
 def conexion():
     return sqlite3.connect("moto.db")
@@ -17,6 +21,55 @@ def conexion():
 def index():
     return render_template("index.html")
 
+def login_required(f):
+
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+
+        if 'usuario' not in session:
+            return redirect('/login')
+
+        return f(*args, **kwargs)
+
+    return decorated_function
+
+@app.route('/dashboard')
+@login_required
+def dashboard():
+    return render_template("dashboard.html")
+
+
+@app.route('/logout')
+def logout():
+
+    session.clear()
+
+    return redirect('/login')
+
+
+
+
+@app.route('/register', methods=['GET','POST'])
+def register():
+
+    if request.method == 'POST':
+
+        username = request.form['username']
+        password = generate_password_hash(request.form['password'])
+
+        conn = conexion()
+        cursor = conn.cursor()
+
+        cursor.execute(
+            "INSERT INTO usuarios (username,password) VALUES (?,?)",
+            (username,password)
+        )
+
+        conn.commit()
+
+        return redirect('/login')
+
+    return render_template("register.html")
 
 @app.route('/login', methods=['GET','POST'])
 def login():
@@ -29,14 +82,21 @@ def login():
         conn = conexion()
         cursor = conn.cursor()
 
-        cursor.execute("SELECT * FROM usuarios WHERE username=?", (username,))
+        cursor.execute(
+            "SELECT * FROM usuarios WHERE username=?",
+            (username,)
+        )
+
         user = cursor.fetchone()
 
         if user and check_password_hash(user[2], password):
-            session['user'] = user[0]
+
+            session['usuario'] = user[0]
+
             return redirect('/dashboard')
 
     return render_template("login.html")
+
 
 
 # -------------------------
