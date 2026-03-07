@@ -19,9 +19,6 @@ def conexion():
 conn = conexion()
 cursor = conn.cursor()
 
-username = session
-session["usuario"] = username
-
 
 
 def login_required(f):
