@@ -38,7 +38,7 @@ def login_required(f):
 #def home():
 #    return "index.html"
 
-@app.route('/login')
+@app.route('/index')
 @login_required
 def index():
     if "usuario" not in session:
