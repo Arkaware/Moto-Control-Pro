@@ -33,10 +33,10 @@ def login_required(f):
 
     return decorated_function
 
-@app.route('/dashboard')
+@app.route('/index')
 @login_required
-def dashboard():
-    return render_template("dashboard.html")
+def index():
+    return render_template("index.html")
 
 
 @app.route('/logout')
@@ -93,7 +93,7 @@ def login():
 
             session['usuario'] = user[0]
 
-            return redirect('/dashboard')
+            return redirect('/index')
 
     return render_template("login.html")
 
@@ -124,7 +124,7 @@ def mantenimiento():
         conn.commit()
         conn.close()
 
-        return redirect("/dashboard")
+        return redirect("/index")
 
     return render_template("mantenimiento.html")
 
@@ -154,7 +154,7 @@ def gasolina():
         conn.commit()
         conn.close()
 
-        return redirect("/dashboard")
+        return redirect("/index")
 
     return render_template("gasolina.html")
 
