@@ -212,19 +212,6 @@ def dashboard():
         total_gasto=total_gasto
     )
 
-@app.route("/debug_users")
-def debug_users():
-
-    conn = conexion()
-    cursor = conn.cursor()
-
-    cursor.execute("SELECT * FROM usuarios")
-    user = cursor.fetchall()
-
-    conn.close()
-
-    return str(user)
-
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
