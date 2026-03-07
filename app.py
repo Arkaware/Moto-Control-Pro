@@ -6,12 +6,17 @@ from werkzeug.security import generate_password_hash, check_password_hash
 import pandas as pd
 from flask import send_file
 from functools import wraps
+from flask import url_for
+from datetime import timedelta
+
+
 
 
 
 
 app = Flask(__name__)
 app.secret_key = "super_secret_key"
+app.permanent_session_lifetime = timedelta(seconds=15)
 
 def conexion():
     return sqlite3.connect("moto.db")
@@ -21,16 +26,18 @@ cursor = conn.cursor()
 
 
 
+
 def login_required(f):
+
 
     @wraps(f)
     def decorated_function(*args, **kwargs):
 
         if 'usuario' not in session:
             return redirect('/login')
-
+        
         return f(*args, **kwargs)
-
+    
     return decorated_function
 
 
@@ -38,11 +45,11 @@ def login_required(f):
 #def home():
 #    return "index.html"
 
-@app.route('/index')
+@app.route('/')
 @login_required
 def index():
     if "usuario" not in session:
-        return redirect("/login")
+       return redirect("/login")
     return render_template("index.html")
 
 
@@ -81,6 +88,8 @@ def register():
 @app.route('/login', methods=['GET','POST'])
 def login():
 
+    error = None
+
     if request.method == 'POST':
 
         username = request.form["username"].strip()
@@ -89,23 +98,37 @@ def login():
         conn = conexion()
         cursor = conn.cursor()
 
+        # fetch user record by username only
         cursor.execute(
-            "SELECT * FROM usuarios WHERE username=? AND password=?",
-            (username, password)
+            "SELECT * FROM usuarios WHERE username=?",
+            (username,)
         )
-
+        
         user = cursor.fetchone()
         conn.close()
 
-        if user:
+        if user and check_password_hash(user[2], password):
+            session.permanent = True              # usa la vida útil definida arriba
             session["usuario"] = username
-            return redirect("/index")
+            return redirect(url_for('index'))
         else:
-            return "Usuario o contraseña incorrectos"
+            return render_template("login.html", error="Usuario o contraseña incorrectos")
         
-    return render_template("login.html")
+    return render_template("login.html", error=error)
 
+@app.route("/debug_users")
 
+def debug_users():
+
+    conn = conexion()
+    cursor = conn.cursor()
+
+    cursor.execute("SELECT * FROM usuarios")
+    users = cursor.fetchall()
+
+    conn.close()
+
+    return str(users)
 
 # -------------------------
 # MANTENIMIENTO
@@ -211,6 +234,8 @@ def dashboard():
         gasolina=gasolina,
         total_gasto=total_gasto
     )
+
+
 
 
 if __name__ == "__main__":
