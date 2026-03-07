@@ -29,7 +29,12 @@ def login_required(f):
 
     return decorated_function
 
-@app.route('/index')
+
+##@app.route("/")
+#def home():
+#    return "index.html"
+
+@app.route('/')
 @login_required
 def index():
     return render_template("index.html")
@@ -199,6 +204,9 @@ def dashboard():
         gasolina=gasolina,
         total_gasto=total_gasto
     )
+
+
+
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
