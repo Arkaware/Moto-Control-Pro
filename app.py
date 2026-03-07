@@ -103,7 +103,7 @@ def login():
         else:
             return "Usuario o contraseña incorrectos"
 
-    return render_template("login.html")
+    return render_template("index.html")
 
 
 
