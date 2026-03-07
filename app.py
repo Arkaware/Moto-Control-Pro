@@ -3,7 +3,8 @@ import sqlite3
 import os
 from flask import session, redirect
 from werkzeug.security import generate_password_hash, check_password_hash
-
+import pandas as pd
+from flask import send_file
 
 app = Flask(__name__)
 
@@ -96,6 +97,24 @@ def gasolina():
         return redirect("/dashboard")
 
     return render_template("gasolina.html")
+
+@app.route('/exportar_gasolina')
+def exportar_gasolina():
+
+    conn = conexion()
+    cursor = conn.cursor()
+
+    cursor.execute("SELECT * FROM gasolina")
+
+    data = cursor.fetchall()
+
+    df = pd.DataFrame(data)
+
+    archivo = "gasolina.xlsx"
+
+    df.to_excel(archivo, index=False)
+
+    return send_file(archivo, as_attachment=True)
 
 
 # -------------------------
