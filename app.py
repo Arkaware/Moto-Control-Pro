@@ -99,11 +99,10 @@ def login():
 
         if user:
             session["usuario"] = username
-            return redirect("/dashboard")
+            return redirect("/")
         else:
             return "Usuario o contraseña incorrectos"
 
-    return render_template("login.html")
 
 
 
