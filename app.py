@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, session
 import sqlite3
 import os
 from flask import session, redirect, request, render_template
@@ -9,8 +9,8 @@ from functools import wraps
 
 
 
-app = Flask(__name__)
 
+app = Flask(__name__)
 app.secret_key = "super_secret_key"
 
 def conexion():
@@ -18,6 +18,10 @@ def conexion():
 
 conn = conexion()
 cursor = conn.cursor()
+
+username = session
+session["usuario"] = username
+
 
 
 def login_required(f):
@@ -40,13 +44,15 @@ def login_required(f):
 @app.route('/')
 @login_required
 def index():
+    if "usuario" not in session:
+        return redirect("/login")
     return render_template("index.html")
 
 
 @app.route('/logout')
 def logout():
 
-    session.clear()
+    session.pop("usuario", None)
 
     return redirect('/login')
 
@@ -87,19 +93,20 @@ def login():
         cursor = conn.cursor()
 
         cursor.execute(
-            "SELECT * FROM usuarios WHERE username=?",
-            (username,)
+            "SELECT * FROM usuarios WHERE username=? AND password=?",
+            (username, password)
         )
 
         user = cursor.fetchone()
+        conn.close()
 
-        if user and check_password_hash(user[2], password):
+        if user:
+            session["usuario"] = username
+            return redirect("/dashboard")
+        else:
+            return "Usuario o contraseña incorrectos"
 
-            session['usuario'] = user[0]
-
-            return redirect('/index')
-
-    return render_template("index.html")
+    return render_template("login.html")
 
 
 

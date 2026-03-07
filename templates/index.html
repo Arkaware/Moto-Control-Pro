@@ -16,11 +16,19 @@
 
 <h2>🏍️ Moto Control</h2>
 
+{% if session["usuario"] %}
+<p>Bienvenido {{ session["usuario"] }}</p>
+{% endif %}
+
 <a class="btn" href="/mantenimiento">🔧 Mantenimiento</a>
 
 <a class="btn" href="/gasolina">⛽ Gasolina</a>
 
 <a class="btn" href="/dashboard">📊 Dashboard</a>
+
+<a href="/logout">
+<button>Salir</button>
+</a>
 
 </div>
 <script>
